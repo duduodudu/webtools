@@ -1,0 +1,48 @@
+{
+  "name": "scripts_generator",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject"
+  },
+  "homepage": ".",
+  "dependencies": {
+    "@ant-design/icons": "^4.3.0",
+    "@craco/craco": "^5.8.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "antd": "^4.8.5",
+    "codemirror": "^5.58.3",
+    "craco-less": "^1.17.0",
+    "js-beautify": "^1.13.0",
+    "jsonlint-mod": "^1.7.6",
+    "react": "^17.0.1",
+    "react-codemirror2": "^7.2.1",
+    "react-dom": "^17.0.1",
+    "react-json-view": "^1.19.1",
+    "react-scripts": "4.0.1",
+    "web-vitals": "^0.2.4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
