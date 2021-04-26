@@ -327,7 +327,7 @@ export default class UserQrCodePage extends Component {
                     </Col>
                     <Col>
                         <Input placeholder="备注信息" value={this.state.titleValue}
-                            addonAfter=".pdf" 
+                            addonAfter=".pdf"
                             onChange={(e) => {
                                 document.title = e.target.value || "用户二维码";
                                 this.setState({ titleValue: document.title })
@@ -360,7 +360,7 @@ export default class UserQrCodePage extends Component {
                 </Row>
 
                 {this.state.showTextArea && <TextArea style={{ height: '300px' }}
-                    placeholder="输入想要生成的二维码信息: 账号@姓名，一行写一个，@姓名可以不填写。" value={this.state.usersInputValue}
+                    placeholder="输入想要生成的二维码信息: 姓名@账号，一行写一个，姓名@可以不填写。" value={this.state.usersInputValue}
                     onChange={(e) => {
                         // console.log(e.target.value);
                         this.setState({ usersInputValue: e.target.value });
@@ -374,18 +374,33 @@ export default class UserQrCodePage extends Component {
                                 console.log('每一行:', user);
                                 if (user) {
                                     if (user.indexOf('@') !== -1) {
-                                        const userName = user.split('@')[1];
-                                        const account = user.split('@')[0];
+                                        const userName = user.split('@')[0];
+                                        const account = user.split('@')[1].trim();
                                         userCodes.push({
                                             name: userName,
                                             account: account,
                                         });
-                                    } else {
-                                        userCodes.push({
-                                            name: '',
-                                            account: user,
-                                        });
-                                    }
+                                    } else
+                                        if (user.indexOf('	') !== -1) {
+                                            const userName = user.split('	')[0];
+                                            const account = user.split('	')[1].trim();
+                                            userCodes.push({
+                                                name: userName,
+                                                account: account,
+                                            });
+                                        } else if (user.indexOf(' ') !== -1) {
+                                            const userName = user.split(' ')[0];
+                                            const account = user.split(' ')[1].trim();
+                                            userCodes.push({
+                                                name: userName,
+                                                account: account,
+                                            });
+                                        } else {
+                                            userCodes.push({
+                                                name: '',
+                                                account: user,
+                                            });
+                                        }
                                 }
 
                             }
@@ -397,20 +412,23 @@ export default class UserQrCodePage extends Component {
                         }
                     }} />}
                 {/* <Divider orientation="left" plain></Divider> */}
-                <Space direction="vertical" style={{ width: '100%' }}>
+                <Space direction="vertical" style={{ width: '100%' }} id='print'>
                     <div>文件名称:{this.state.titleValue} 大小:{this.state.qrCodeSize}</div>
-                    <Row style={{ width: '100%' }} wrap={true} id='print' >
+                    <Row style={{ width: '100%' }} wrap={true} >
                         {
                             this.state.userCodes.map((item, index) => {
                                 const qrCode = item.account + '123456';
                                 // console.log(item);
-                                return <div className='page2el' style={{marginTop:'2px'}}
+                                return <div className='page2el' style={{ marginTop: '2px' }}
                                     key={index + item.name + '@' + item.account}>
                                     <Col flex="0 1 120px" key={index + item.name + '@' + item.account}
                                         className='page2el'
                                         style={{ width: this.state.qrCodeSize + 'px', margin: '5px' }}>
                                         {qrCode && <QRCode value={qrCode} size={this.state.qrCodeSize} style={{ border: '2px solid black' }}></QRCode>}
-                                        <div className='page2el' style={{ textAlign: 'center' }}>{item.name + '  ' + item.account}</div>
+                                        <div className='page2el' style={{ textAlign: 'center' }}>
+                                            {item.name + '  '}
+                                            <span style={{ fontSize: '18px', color: 'red' }}>[{item.account}]</span>
+                                        </div>
                                     </Col>
                                 </div>
 

@@ -6,6 +6,7 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
+    "release": "craco build && mv -f build pages",
     "eject": "react-scripts eject"
   },
   "homepage": ".",
