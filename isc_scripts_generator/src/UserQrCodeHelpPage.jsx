@@ -239,7 +239,7 @@ function getTimeStr() {
 /**
  * 用户二维码批量生成
  */
-export default class UserQrCodePage extends Component {
+export default class UserQrCodeHelpPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -311,7 +311,7 @@ export default class UserQrCodePage extends Component {
             image: { type: 'jpeg', quality: 0.98 }, // 导出的图片质量和格式
             html2canvas: { scale: 2, useCORS: true }, // useCORS很重要，解决文档中图片跨域问题
             jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-            pagebreak: { mode: 'avoid-all', before: '#page2el' },
+            pagebreak: { mode: 'avoid-all', before: '#page2ell' },
             // pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
         };
         if (element) {
@@ -336,10 +336,10 @@ export default class UserQrCodePage extends Component {
                             }} />
                     </Col>
                     <Col>
-                        <Input placeholder="密码" value={this.state.userPassword}
-                            addonBefore="密码:"
+                        <Input placeholder="123456" value={this.state.userPassword}
+                            addonBefore="默认密码:"
                             onChange={(e) => {
-                                this.setState({ userPassword: e.target.value })
+                                this.setState({ userPassword: e.target.value || '123456'})
                             }} />
                     </Col>
                     <Col>
@@ -370,12 +370,12 @@ export default class UserQrCodePage extends Component {
                 </Row>
 
                 {this.state.showTextArea && <TextArea style={{ height: '300px' }}
-                    placeholder="输入想要生成的二维码信息: 姓名@账号，一行写一个，姓名@可以不填写。" value={this.state.usersInputValue}
+                    placeholder="输入想要生成的二维码信息: 姓名@账号@密码，一行写一个，姓名@可以不填写。@密码不填写的时候使用默认密码" value={this.state.usersInputValue}
                     onChange={(e) => {
                         // console.log(e.target.value);
                         this.setState({ usersInputValue: e.target.value });
                     }} onBlur={(e) => {
-                        console.log(e.target.value);
+                        // console.log(e.target.value);
                         const usersStr = e.target.value;
                         if (usersStr) {
                             const users = usersStr.split('\n');
@@ -386,9 +386,11 @@ export default class UserQrCodePage extends Component {
                                     if (user.indexOf('@') !== -1) {
                                         const userName = user.split('@')[0].trim();
                                         const account = user.split('@')[1].trim();
+                                        const password = user.split('@')[2].trim();
                                         userCodes.push({
                                             name: userName,
                                             account: account,
+                                            password:password,
                                         });
                                     } else
                                         if (user.indexOf('	') !== -1) {
@@ -427,15 +429,18 @@ export default class UserQrCodePage extends Component {
                     <Row style={{ width: '100%' }} wrap={true} >
                         {
                             this.state.userCodes.map((item, index) => {
-                                const qrCode = item.account + this.state.userPassword;
-                                // console.log(item);
-                                return <div className='page2el' style={{ marginTop: '2px' }}
+                                var qrCode = item.account + this.state.userPassword;
+                                if (item.password) {
+                                    qrCode = item.account + item.password;
+                                }
+                                console.log(`生成二维码的信息是: ${index} [${qrCode}]`);
+                                return <div className='page2ell' style={{ marginTop: '2px' }}
                                     key={index + item.name + '@' + item.account}>
                                     <Col flex="0 1 120px" key={index + item.name + '@' + item.account}
-                                        className='page2el'
+                                        className='page2ell'
                                         style={{ width: this.state.qrCodeSize + 'px', margin: '5px' }}>
                                         {qrCode && <QRCode value={qrCode} size={this.state.qrCodeSize} style={{ border: '2px solid black' }}></QRCode>}
-                                        <div className='page2el' style={{
+                                        <div className='page2ell' style={{
                                             textAlign: 'center',
                                             fontSize: 18*(this.state.qrCodeSize/100)+'px',
                                         }}>
