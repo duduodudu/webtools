@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "craco build && echo '打包成功'",
     "test": "craco test",
     "release": "craco build &&  rm -rf pages && mv build pages",
+    "release-mba": "npm run build  &&  rm -rf '/Users/apple/Documents/Repos/GitHub/webtools/isc_scripts_generator/pages' && cp -rf build '/Users/apple/Documents/Repos/GitHub/webtools/isc_scripts_generator/pages' && open '/Users/apple/Documents/Repos/GitHub/webtools/isc_scripts_generator/pages'",
     "eject": "react-scripts eject"
   },
   "homepage": ".",

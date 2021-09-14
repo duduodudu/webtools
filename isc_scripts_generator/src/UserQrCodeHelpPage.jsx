@@ -330,16 +330,23 @@ export default class UserQrCodeHelpPage extends Component {
                     <Col>
                         <Input placeholder="备注信息" value={this.state.titleValue}
                             addonAfter=".pdf"
-                            onChange={(e) => {
+                            onBlur={(e) => {
                                 document.title = e.target.value || "用户二维码";
+                                this.setState({ titleValue: document.title })
+                            }} 
+                            onChange={(e) => {
                                 this.setState({ titleValue: document.title })
                             }} />
                     </Col>
                     <Col>
                         <Input placeholder="123456" value={this.state.userPassword}
                             addonBefore="默认密码:"
+                            onBlur={(e) => {
+                                var pwd = e.target.value || "123456";
+                                this.setState({ userPassword: pwd})
+                            }}
                             onChange={(e) => {
-                                this.setState({ userPassword: e.target.value || '123456'})
+                                this.setState({ userPassword: e.target.value})
                             }} />
                     </Col>
                     <Col>
@@ -386,7 +393,10 @@ export default class UserQrCodeHelpPage extends Component {
                                     if (user.indexOf('@') !== -1) {
                                         const userName = user.split('@')[0].trim();
                                         const account = user.split('@')[1].trim();
-                                        const password = user.split('@')[2].trim();
+                                        var password = user.split('@')[2];
+                                        if(password){
+                                            password=password.trim()
+                                        }
                                         userCodes.push({
                                             name: userName,
                                             account: account,
